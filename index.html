@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aena Habib — Pixel Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  :root{
+    --bg: #EAF4FF;
+    --panel: #FFFFFF;
+    --ink: #22223B;
+    --pink: #FFB3D9;
+    --pink-deep: #FF6B9D;
+    --mint: #B5EAD7;
+    --lavender: #C7CEEA;
+    --peach: #FFDAC1;
+    --sun: #FFE29A;
+    --violet: #C9A9E8;
+    --sky: #4FA8DE;
+    --sky-top: #2E6DA8;
+    --sky-mid: #6FBFEA;
+    --sky-line: #D6E9FF;
+    --quest-bg: #EFF8FF;
+    --shadow: 4px 4px 0 var(--ink);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'VT323', monospace;
+    font-size:20px;
+    line-height:1.5;
+  }
+
+  h1,h2,h3, .pixel-font, nav a, button, .btn{ font-family:'Press Start 2P', monospace; }
+  a{ color:var(--ink); }
+  ::selection{ background:var(--pink); color:var(--ink); }
+
+  .wrap{ max-width: 980px; margin:0 auto; padding: 0 24px; }
+  section{ padding: 72px 0; }
+
+  /* ---------- nav ---------- */
+  header.nav{ position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:4px solid var(--ink); }
+  header.nav .wrap{ display:flex; align-items:center; justify-content:space-between; padding-top:14px; padding-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .brand{ font-size:13px; letter-spacing:1px; }
+  .brand span{ color:var(--pink-deep); }
+  nav.links{ display:flex; gap:8px; flex-wrap:wrap; }
+  nav.links a{
+    text-decoration:none; font-size:9px; background:var(--panel);
+    border:3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding:8px 9px;
+    transition: transform .08s ease;
+  }
+  nav.links a:nth-child(1){ background:var(--peach); }
+  nav.links a:nth-child(2){ background:var(--mint); }
+  nav.links a:nth-child(3){ background:var(--sun); }
+  nav.links a:nth-child(4){ background:var(--pink); }
+  nav.links a:hover{ transform: translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink); background:var(--violet); }
+  nav.links a:active{ transform: translate(1px,1px); box-shadow:2px 2px 0 var(--ink); }
+
+  /* ---------- pixel building blocks ---------- */
+  .pixel-border{ border:4px solid var(--ink); box-shadow: var(--shadow); background:var(--panel); }
+  .chip{
+    display:inline-block; font-family:'Press Start 2P', monospace; font-size:9px;
+    padding:7px 9px; margin:3px; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink); background:var(--lavender);
+  }
+  .chip.mint{ background:var(--mint); } .chip.peach{ background:var(--peach); } .chip.pink{ background:var(--pink); }
+  .chip.sun{ background:var(--sun); } .chip.violet{ background:var(--violet); }
+  .eyebrow{ font-size:11px; color:var(--pink-deep); letter-spacing:2px; margin-bottom:14px; }
+  .section-title{ font-size:20px; margin-bottom:8px; }
+  .section-title .num{ color:var(--pink-deep); }
+  .section-title .num.sky{ color:var(--sky); }
+  .section-title .num.violet{ color:var(--violet); }
+  .section-title .num.sun{ color:#C98A00; }
+
+  button{ font-family:'Press Start 2P', monospace; cursor:pointer; }
+  button:focus-visible, a:focus-visible{ outline: 3px dashed var(--pink-deep); outline-offset:3px; }
+
+  /* ================= HERO / SKY ================= */
+  .hero{
+    padding-top:0; text-align:center; position:relative; overflow:hidden;
+    background:
+      radial-gradient(60px 30px at 12% 22%, #ffffffbb 0, transparent 70%),
+      linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 38%, var(--bg) 100%);
+    padding-bottom:56px;
+  }
+  .sky-field{ position:relative; height:150px; }
+  .pxcloud{ position:absolute; background:#fff; box-shadow: inherit; }
+  .pxcloud.c1{ width:34px; height:10px; top:26px; left:8%; box-shadow: 10px -6px 0 #fff, 20px 0 0 #fff, 30px -6px 0 #fff; animation: drift 26s linear infinite; }
+  .pxcloud.c2{ width:26px; height:8px; top:58px; left:60%; box-shadow: 8px -5px 0 #fff, 16px 0 0 #fff; animation: drift 34s linear infinite reverse; }
+  .pxcloud.c3{ width:30px; height:9px; top:14px; left:78%; box-shadow: 9px -5px 0 #fff, 18px 0 0 #fff, 27px -5px 0 #fff; animation: drift 20s linear infinite; }
+  .pxcloud.c4{ width:22px; height:7px; top:90px; left:26%; box-shadow: 7px -4px 0 #fff, 14px 0 0 #fff; animation: drift 30s linear infinite reverse; }
+  @keyframes drift{ 0%{ transform:translateX(0);} 50%{ transform:translateX(18px);} 100%{ transform:translateX(0);} }
+
+  .hero-inner{ padding-top:24px; }
+  .avatar-frame{
+    width:120px; height:136px; margin:0 auto 20px; padding:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--panel);
+  }
+  .hero h1{ font-size: clamp(24px, 6vw, 40px); margin:10px 0 12px; letter-spacing:1px; }
+  .hero h1 .heart-ic{ color: var(--pink-deep); }
+  .hero p.sub{ font-size:22px; max-width:560px; margin:0 auto 8px; }
+  .hero p.tag{ font-size:16px; color:#5a5a78; margin-bottom:10px; }
+  .scroll-cue{ font-size:10px; margin-top:26px; color:#5a5a78; animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(6px);} }
+
+  /* pixel avatar (girl) */
+  .pxavatar{ position:relative; width:64px; height:76px; }
+  .pxavatar .hairback{ position:absolute; top:6px; left:2px; width:60px; height:52px; background:#3B2A2A; }
+  .pxavatar .face{ position:absolute; top:16px; left:12px; width:40px; height:40px; background:#FFDCC2; }
+  .pxavatar .bangs{ position:absolute; top:14px; left:12px; width:40px; height:12px; background:#3B2A2A; }
+  .pxavatar .eye{ position:absolute; top:34px; width:6px; height:6px; background:var(--ink); }
+  .pxavatar .eye.l{ left:20px; } .pxavatar .eye.r{ left:38px; }
+  .pxavatar .cheek{ position:absolute; top:44px; width:6px; height:4px; background:var(--pink-deep); opacity:.7; }
+  .pxavatar .cheek.l{ left:16px; } .pxavatar .cheek.r{ left:42px; }
+  .pxavatar .clip{ position:absolute; top:10px; left:38px; width:8px; height:8px; background:var(--pink-deep); }
+  .pxavatar .hairside{ position:absolute; top:20px; width:8px; height:44px; background:#3B2A2A; }
+  .pxavatar .hairside.l{ left:0; } .pxavatar .hairside.r{ left:56px; }
+
+  /* ================= QUEST (endless runner) ================= */
+  .quest-section{ background:var(--quest-bg); border-top:4px solid var(--ink); border-bottom:4px solid var(--ink); }
+  .browser-frame{ background:var(--panel); border:4px solid var(--ink); box-shadow: var(--shadow); overflow:hidden; }
+  .browser-bar{ display:flex; align-items:center; gap:8px; padding:8px 10px; border-bottom:3px solid var(--ink); background:var(--lavender); }
+  .dot{ width:10px; height:10px; border:2px solid var(--ink); }
+  .dot.red{ background:#FF8A8A; } .dot.yellow{ background:#FFE28A; } .dot.green{ background:#B5EAD7; }
+  .browser-url{ margin-left:8px; font-size:11px; background:#fff; border:2px solid var(--ink); padding:4px 8px; flex:1; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+
+  .quest-hud{ display:flex; justify-content:space-between; align-items:center; padding:10px 14px; font-size:10px; flex-wrap:wrap; gap:8px; }
+  .hud-box{ background:var(--peach); border:3px solid var(--ink); padding:6px 9px; }
+  .hud-box.violet{ background:var(--violet); }
+
+  .runner-box{
+    position:relative; height:210px; overflow:hidden;
+    background: linear-gradient(180deg, #EAF6FF 0%, #DDEFFF 65%, #D2E9FF 100%);
+    border-top:3px solid var(--ink); border-bottom:3px solid var(--ink);
+  }
+  .runner-box.blossom-mode{ background: linear-gradient(180deg, #FFF3F8 0%, #FFE3EE 65%, #FFD3E4 100%); }
+
+  .runner-cloud{ position:absolute; background:#fff; box-shadow: inherit; opacity:.9; }
+  .runner-cloud.a{ width:24px; height:7px; top:16px; left:20%; box-shadow: 7px -4px 0 #fff, 14px 0 0 #fff; }
+  .runner-cloud.b{ width:20px; height:6px; top:34px; left:70%; box-shadow: 6px -4px 0 #fff, 12px 0 0 #fff; }
+
+  .runner-ground{ position:absolute; left:0; right:0; bottom:0; height:30px; background:var(--mint); border-top:4px solid var(--ink); }
+  .runner-ground.blossom{ background:#FFC2D8; }
+
+  .runner-char{ position:absolute; bottom:30px; left:34px; width:30px; height:30px; background:var(--ink); z-index:5; }
+  .runner-char.jumping{ animation: rjump .5s steps(6) forwards; }
+  @keyframes rjump{ 0%{transform:translateY(0);} 35%{transform:translateY(-64px);} 60%{transform:translateY(-64px);} 100%{transform:translateY(0);} }
+  .runner-char .eye{ position:absolute; top:7px; width:6px; height:6px; background:#fff; }
+  .runner-char .eye.l{ left:4px;} .runner-char .eye.r{ left:19px; }
+  .runner-char .pupil{ position:absolute; top:2px; left:2px; width:2px; height:2px; background:var(--ink); }
+  .runner-char .cheek{ position:absolute; top:17px; width:5px; height:3px; background:var(--pink); }
+  .runner-char .cheek.l{ left:2px;} .runner-char .cheek.r{ left:23px; }
+
+  .runner-item{ position:absolute; }
+  .runner-item.air{ }
+  .float-pop{
+    position:absolute; font-family:'Press Start 2P', monospace; font-size:9px; color:var(--pink-deep);
+    white-space:nowrap; animation: floatUp .8s ease-out forwards; pointer-events:none; z-index:6;
+  }
+  @keyframes floatUp{ 0%{ transform:translateY(0); opacity:1;} 100%{ transform:translateY(-38px); opacity:0;} }
+
+  .tree-wrap{ position:absolute; right:26px; bottom:30px; }
+
+  .msg-overlay{
+    position:absolute; inset:0; background:rgba(255,243,248,.88);
+    display:flex; align-items:center; justify-content:center; padding:16px; z-index:10;
+  }
+  .msg-box{ max-width:360px; padding:16px; text-align:center; background:var(--panel); }
+  .msg-box p{ font-size:19px; margin:6px 0 14px; }
+  .msg-box .from{ font-size:10px; color:var(--pink-deep); margin-bottom:10px; }
+  .msg-box button{ font-size:10px; padding:9px 12px; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink); background:var(--mint); }
+  .msg-box button:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+
+  .quest-controls{ display:flex; align-items:center; justify-content:center; gap:14px; padding:16px 14px 6px; flex-wrap:wrap; }
+  .jump-btn{
+    font-size:11px; padding:12px 20px; background:var(--pink); border:3px solid var(--ink); box-shadow:4px 4px 0 var(--ink);
+  }
+  .jump-btn:active{ transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink); }
+  .jump-btn:disabled{ opacity:.45; cursor:not-allowed; }
+  .quest-hint{ font-size:14px; color:#5a5a78; text-align:center; padding:0 14px 18px; }
+
+  /* treat tray */
+  .tray{ padding:14px; border-top:3px dashed var(--ink); background:#fff; }
+  .tray h4{ font-size:10px; margin:0 0 10px; }
+  .tray-row{ display:flex; flex-wrap:wrap; gap:10px; min-height:44px; align-items:center; }
+  .tray-empty{ font-size:15px; color:#8a8aa8; }
+  .treat{
+    position:relative; width:44px; height:44px; background:#fff; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .treat:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .treat .bite-badge{ position:absolute; bottom:-8px; right:-8px; font-size:8px; background:var(--peach); border:2px solid var(--ink); padding:2px 4px; }
+
+  /* ---------- info ---------- */
+  .info-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; margin-top:28px; }
+  @media(max-width:760px){ .info-grid{ grid-template-columns:1fr; } }
+  .card{ padding:22px; }
+  .card h3{ font-size:13px; margin:0 0 12px; }
+  .card p{ margin:0 0 10px; font-size:19px; }
+  .quest-item{ display:flex; gap:12px; align-items:flex-start; margin-bottom:16px; }
+  .quest-item .bullet{ width:14px; height:14px; background:var(--pink); border:2px solid var(--ink); flex:none; margin-top:5px; }
+  .quest-item .body h4{ margin:0 0 4px; font-size:11px; }
+  .quest-item .body p{ margin:0; font-size:18px; color:#4c4c6a; }
+
+  /* ---------- projects ---------- */
+  .proj-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:22px; margin-top:28px; }
+  @media(max-width:700px){ .proj-grid{ grid-template-columns:1fr; } }
+  .proj-card{ padding:20px; position:relative; transition: transform .12s ease, box-shadow .12s ease; }
+  .proj-card:hover{ transform: translate(-3px,-3px); box-shadow:7px 7px 0 var(--ink); }
+  .proj-card .year{ position:absolute; top:-12px; right:14px; font-size:9px; background:var(--peach); border:3px solid var(--ink); padding:4px 6px; }
+  .proj-card h3{ font-size:13px; margin:6px 0 10px; }
+  .proj-card p{ font-size:18px; margin:0 0 12px; color:#4c4c6a; }
+  .achievements{ margin-top:36px; padding:20px; }
+  .achievements h3{ font-size:12px; margin:0 0 12px; }
+  .achievements ul{ margin:0; padding-left:20px; font-size:18px; }
+  .achievements li{ margin-bottom:6px; }
+
+  /* ---------- footer ---------- */
+  footer{ border-top:4px solid var(--ink); background:var(--panel); padding:40px 0; text-align:center; }
+  footer .links{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:18px; }
+  footer .links a{ text-decoration:none; font-size:10px; padding:9px 12px; border:3px solid var(--ink); box-shadow:3px 3px 0 var(--ink); background:var(--lavender); }
+  footer .links a:hover{ background:var(--mint); transform: translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink); }
+  footer .tag{ font-size:14px; color:#5a5a78; }
+
+  @media (prefers-reduced-motion: reduce){
+    .pxcloud, .doodle-petal, .doodle-heart-blink, .doodle-bounceball, .doodle-wag::after, .doodle-sparkle, .scroll-cue{ animation:none !important; }
+    .runner-char.jumping{ animation-duration:.01s; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ---------- generic pixel-matrix icon (box-shadow dots) ---------- */
+function pixelShadow(matrix, size, colorMap){
+  const parts = [];
+  matrix.forEach((row, y) => {
+    row.forEach((cell, x) => {
+      if (cell) parts.push(`${x*size}px ${y*size}px 0 0 ${colorMap[cell]}`);
+    });
+  });
+  return parts.join(',');
+}
+
+const HEART_MATRIX = [
+  [0,1,1,0,1,1,0],
+  [1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1],
+  [0,1,1,1,1,1,0],
+  [0,0,1,1,1,0,0],
+  [0,0,0,1,0,0,0],
+];
+const ICONS = {
+  heart:     { matrix: HEART_MATRIX, colors: { 1: '#FF6B9D' }, size: 3 },
+  cookie:    { matrix: [[1,1,1,0],[1,2,1,1],[1,1,2,1],[0,1,1,0]], colors: { 1:'#D9A066', 2:'#7A4B2A' }, size: 4 },
+  cake:      { matrix: [[1,1,1,1],[2,2,2,2],[2,2,2,2],[0,2,2,0]], colors: { 1:'#FFD6E8', 2:'#FFEAD1' }, size: 4 },
+  chocolate: { matrix: [[1,1,1,1],[1,2,2,1],[1,1,1,1],[1,2,2,1]], colors: { 1:'#6B4226', 2:'#8C5A3C' }, size: 4 },
+  candy:     { matrix: [[2,0,0,2],[2,1,1,2],[2,1,1,2],[2,0,0,2]], colors: { 1:'#FF6B9D', 2:'#FFFFFF' }, size: 4 },
+};
+function PixelIcon({ type, style }) {
+  const def = ICONS[type];
+  return <div style={{ width: def.size, height: def.size, boxShadow: pixelShadow(def.matrix, def.size, def.colors), ...style }} />;
+}
+
+const TREAT_TYPES = ['cookie', 'cake', 'chocolate', 'candy'];
+const TREAT_LABEL = { cookie: 'COOKIE', cake: 'CAKE', chocolate: 'CHOC', candy: 'CANDY' };
+
+/* ---------- cherry blossom tree ---------- */
+const TREE_CANOPY = [
+  [0,0,1,1,1,0,0],
+  [0,1,2,1,2,1,0],
+  [1,2,1,1,1,2,1],
+  [0,1,1,2,1,1,0],
+  [0,0,1,1,1,0,0],
+];
+function CherryTree() {
+  return (
+    <div style={{ position:'relative', width:70, height:90 }}>
+      <div style={{ position:'absolute', bottom:0, left:30, width:10, height:40, background:'#7A4B2A' }} />
+      <div style={{ position:'absolute', top:0, left:0, width:6, height:6, boxShadow: pixelShadow(TREE_CANOPY, 6, {1:'#FFC2D8', 2:'#FF8FB3'}) }} />
+    </div>
+  );
+}
+
+const GOOD_LUCK_MESSAGES = [
+  "Hey friend, good luck today. You're doing better than you think. — Aena",
+  "Sending you a pixel-sized boost of luck, and a big real one too. — Aena",
+  "May your bugs be tiny and your wins be big. Good luck out there! — Aena",
+];
+
+/* ---------- nav ---------- */
+function Nav() {
+  return (
+    <header className="nav">
+      <div className="wrap">
+        <div className="brand">AENA<span>.HABIB</span></div>
+        <nav className="links">
+          <a href="#home">HOME</a>
+          <a href="#quest">QUEST</a>
+          <a href="#info">INFO</a>
+          <a href="#projects">PROJECTS</a>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+/* ================= HERO (sky) ================= */
+function PixelAvatar() {
+  return (
+    <div className="pxavatar">
+      <div className="hairback" />
+      <div className="hairside l" />
+      <div className="hairside r" />
+      <div className="face" />
+      <div className="bangs" />
+      <div className="eye l" /><div className="eye r" />
+      <div className="cheek l" /><div className="cheek r" />
+      <div className="clip" />
+    </div>
+  );
+}
+
+function Home() {
+  return (
+    <section id="home" className="hero">
+      <div className="sky-field">
+        <div className="pxcloud c1" /><div className="pxcloud c2" />
+        <div className="pxcloud c3" /><div className="pxcloud c4" />
+      </div>
+      <div className="wrap hero-inner">
+        <div className="avatar-frame pixel-border"><PixelAvatar /></div>
+        <div className="eyebrow">AI ENGINEER · NLP · RAG · AGENTIC WORKFLOWS</div>
+        <h1>AENA HABIB <span className="heart-ic">♥</span></h1>
+        <p className="sub">Building LLM pipelines by day, chasing pixel hearts on a break.</p>
+        <p className="tag">CMO @ Viylsa · BS Artificial Intelligence, NUTECH · Islamabad, PK</p>
+        <p className="scroll-cue">▼ scroll for a tiny quest ▼</p>
+      </div>
+    </section>
+  );
+}
+
+/* ================= QUEST — endless runner ================= */
+const TRACK_W = 480;
+const CHAR_X = 34;
+const SPAWN_MS_START = 1150;
+const MILESTONE = 5;
+
+function Quest() {
+  const [running, setRunning] = useState(true);
+  const [jumping, setJumping] = useState(false);
+  const [items, setItems] = useState([]);
+  const [pops, setPops] = useState([]);
+  const [bonusCount, setBonusCount] = useState(0);
+  const [speed, setSpeed] = useState(5.5);
+  const [treats, setTreats] = useState([]);
+  const [message, setMessage] = useState(null);
+  const [blossomMode, setBlossomMode] = useState(false);
+
+  const jumpingRef = useRef(false);
+  const runningRef = useRef(true);
+  const idRef = useRef(0);
+  const lastSpawnRef = useRef(0);
+  const spawnMsRef = useRef(SPAWN_MS_START);
+
+  useEffect(() => { jumpingRef.current = jumping; }, [jumping]);
+  useEffect(() => { runningRef.current = running; }, [running]);
+
+  const popText = useCallback((text, x, y) => {
+    const id = ++idRef.current;
+    setPops(p => [...p, { id, text, x, y }]);
+    setTimeout(() => setPops(p => p.filter(pp => pp.id !== id)), 780);
+  }, []);
+
+  const jump = useCallback(() => {
+    if (!runningRef.current) return;
+    setJumping(prev => {
+      if (prev) return prev;
+      setTimeout(() => setJumping(false), 480);
+      return true;
+    });
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowUp' || e.key === ' ') { e.preventDefault(); jump(); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [jump]);
+
+  // main game loop
+  useEffect(() => {
+    let raf;
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = now - last; last = now;
+      if (runningRef.current) {
+        lastSpawnRef.current += dt;
+        setItems(prev => {
+          let next = prev
+            .map(it => ({ ...it, x: it.x - speed }))
+            .filter(it => it.x > -30);
+
+          // collisions
+          const survivors = [];
+          next.forEach(it => {
+            const dx = Math.abs(it.x - CHAR_X);
+            const laneOk = (it.lane === 'air') === jumpingRef.current;
+            if (dx < 20 && laneOk) {
+              if (it.type === 'heart') {
+                setBonusCount(c => {
+                  const nc = c + 1;
+                  popText('+BONUS!', it.x, it.lane === 'air' ? 30 : 100);
+                  if (nc >= MILESTONE) {
+                    runningRef.current = false;
+                    setRunning(false);
+                    setBlossomMode(true);
+                    setMessage(GOOD_LUCK_MESSAGES[Math.floor(Math.random() * GOOD_LUCK_MESSAGES.length)]);
+                    return 0;
+                  }
+                  return nc;
+                });
+              } else {
+                popText('+' + TREAT_LABEL[it.type] + '!', it.x, it.lane === 'air' ? 30 : 100);
+                setTreats(tr => [...tr.slice(-7), { id: ++idRef.current, type: it.type, bites: 0 }]);
+              }
+            } else {
+              survivors.push(it);
+            }
+          });
+          return survivors;
+        });
+
+        if (lastSpawnRef.current > spawnMsRef.current) {
+          lastSpawnRef.current = 0;
+          const isTreat = Math.random() < 0.35;
+          const type = isTreat ? TREAT_TYPES[Math.floor(Math.random() * TREAT_TYPES.length)] : 'heart';
+          const lane = Math.random() < 0.5 ? 'air' : 'ground';
+          setItems(prev => [...prev, { id: ++idRef.current, type, lane, x: TRACK_W }]);
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [speed, popText]);
+
+  const continueQuest = () => {
+    setMessage(null);
+    setBlossomMode(false);
+    setItems([]);
+    setSpeed(s => Math.min(9, s + 0.6));
+    spawnMsRef.current = Math.max(750, spawnMsRef.current - 60);
+    runningRef.current = true;
+    setRunning(true);
+  };
+
+  const biteTreat = (id) => {
+    setTreats(prev => prev.flatMap(t => {
+      if (t.id !== id) return [t];
+      const bites = t.bites + 1;
+      if (bites >= 3) {
+        popText('hehe', 0, 0);
+        return [];
+      }
+      return [{ ...t, bites }];
+    }));
+  };
+
+  return (
+    <section id="quest" className="quest-section">
+      <div className="wrap">
+        <div className="section-title"><span className="num sky">01 /</span> QUEST — CATCH THE HEART</div>
+
+        <div className="browser-frame">
+          <div className="browser-bar">
+            <span className="dot red" /><span className="dot yellow" /><span className="dot green" />
+            <span className="browser-url">aena-quest.exe — no signal, still fun ✿</span>
+          </div>
+
+          <div className="quest-hud">
+            <span className="hud-box">HEARTS {bonusCount}/{MILESTONE}</span>
+            <span className="hud-box violet">TREATS {treats.length}</span>
+          </div>
+
+          <div className={"runner-box" + (blossomMode ? " blossom-mode" : "")}>
+            <div className="runner-cloud a" /><div className="runner-cloud b" />
+
+            {items.map(it => (
+              <div key={it.id} className="runner-item" style={{ left: it.x, bottom: it.lane === 'air' ? 92 : 30 }}>
+                <PixelIcon type={it.type} />
+              </div>
+            ))}
+
+            {pops.map(p => (
+              <div key={p.id} className="float-pop" style={{ left: p.x || 40, bottom: (p.y || 60) + 30 }}>{p.text}</div>
+            ))}
+
+            {blossomMode && <div className="tree-wrap"><CherryTree /></div>}
+
+            <div className={"runner-char" + (jumping ? " jumping" : "")}>
+              <div className="eye l"><div className="pupil" /></div>
+              <div className="eye r"><div className="pupil" /></div>
+              <div className="cheek l" /><div className="cheek r" />
+            </div>
+
+            <div className={"runner-ground" + (blossomMode ? " blossom" : "")} />
+
+            {message && (
+              <div className="msg-overlay">
+                <div className="msg-box pixel-border">
+                  <div className="from">✿ A NOTE UNDER THE BLOSSOM TREE ✿</div>
+                  <p>{message}</p>
+                  <button onClick={continueQuest}>KEEP GOING ▶</button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="quest-controls">
+            <button className="jump-btn" onClick={jump} disabled={!!message}>▲ JUMP</button>
+          </div>
+          <p className="quest-hint">Jump for hearts floating in the air, stay grounded for treats rolling by. 5 hearts = a note from Aena!</p>
+
+          <div className="tray">
+            <h4>SIDE TOYS (click to nibble)</h4>
+            <div className="tray-row">
+              {treats.length === 0 && <span className="tray-empty">no treats yet — catch a cookie, cake, chocolate or candy!</span>}
+              {treats.map(t => (
+                <div key={t.id} className="treat" onClick={() => biteTreat(t.id)} title="take a bite">
+                  <PixelIcon type={t.type} style={{ transform: `scale(${1 - t.bites * 0.22})` }} />
+                  {t.bites > 0 && <span className="bite-badge">bite {t.bites}</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- info ---------- */
+const SKILL_GROUPS = [
+  { label: 'AI / LLM', cls: 'pink', items: ['RAG Pipelines', 'LLM Fine-tuning', 'Prompt Engineering', 'LangChain', 'HuggingFace', 'FAISS', 'Pinecone', 'Embeddings'] },
+  { label: 'Data & ML', cls: 'mint', items: ['Scikit-learn', 'Pandas', 'NumPy', 'Feature Engineering', 'ROUGE / BERTScore'] },
+  { label: 'Automation', cls: 'peach', items: ['n8n', 'Apache Kafka', 'Event-Driven Pipelines', 'REST APIs', 'Agentic Workflows'] },
+  { label: 'Dev', cls: 'violet', items: ['Python', 'JavaScript', 'TypeScript', 'Node.js', 'React', 'Tauri', 'SQL'] },
+  { label: 'Viz', cls: 'sun', items: ['Grafana', 'ggplot2', 'Matplotlib', 'Plotly', 'Seaborn'] },
+];
+const LANGUAGES = [
+  { name: 'Urdu', level: 'Native' }, { name: 'English', level: 'Fluent' },
+  { name: 'Pashto', level: 'Fluent' }, { name: 'Korean', level: 'Intermediate' },
+];
+
+function Info() {
+  return (
+    <section id="info">
+      <div className="wrap">
+        <div className="section-title"><span className="num violet">02 /</span> INFO</div>
+        <div className="info-grid">
+          <div className="card pixel-border">
+            <h3>ABOUT ME</h3>
+            <p>I'm an AI Engineer building RAG systems, agentic workflows and green, low-resource NLP tools — currently finishing a BS in Artificial Intelligence at NUTECH, Islamabad.</p>
+            <p>Alongside engineering, I lead brand strategy and growth as CMO of Viylsa, an AI startup under university incubation. I like the overlap of systems thinking and design: architecture on one side, playful pixel interfaces on the other.</p>
+            <div className="quest-item"><div className="bullet" /><div className="body"><h4>EDUCATION</h4><p>BS Artificial Intelligence — NUTECH · CGPA 3.46/4.00 · Aug 2023 – Present (6th sem)</p></div></div>
+            <div className="quest-item"><div className="bullet" /><div className="body"><h4>ROLE</h4><p>Chief Marketing Officer, Viylsa — brand strategy, positioning &amp; go-to-market, 2025–present</p></div></div>
+            <div className="quest-item"><div className="bullet" /><div className="body"><h4>ALSO INTO</h4><p>Graphic design, pixel/retro game aesthetics, UI micro-interactions, and dashboards you'd actually enjoy looking at.</p></div></div>
+          </div>
+          <div className="card pixel-border">
+            <h3>SKILLS</h3>
+            {SKILL_GROUPS.map(g => (
+              <div key={g.label} style={{ marginBottom: 14 }}>
+                <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 10, marginBottom: 6 }}>{g.label}</p>
+                {g.items.map(i => <span key={i} className={"chip " + g.cls}>{i}</span>)}
+              </div>
+            ))}
+            <p style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 10, margin: '14px 0 6px' }}>LANGUAGES</p>
+            {LANGUAGES.map(l => <span key={l.name} className="chip pink">{l.name} · {l.level}</span>)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- projects ---------- */
+const PROJECTS = [
+  { title: 'DevFlow-AI', year: '2026', tags: ['Python', 'LangChain', 'Agentic'], cls: 'mint', desc: 'AI developer assistant automating documentation, test generation, code refactoring and review with LLM pipelines. Built for the IBM Build on Behalf Hackathon.' },
+  { title: 'NUTECH Chatbot Assistant', year: '2025', tags: ['n8n', 'FAISS', 'HuggingFace'], cls: 'peach', desc: 'End-to-end chatbot with document ingestion, embeddings and FAISS retrieval for context-aware, low-hallucination answers.' },
+  { title: 'Real-Time Data Pipeline', year: '2025', tags: ['Kafka', 'PostgreSQL', 'Grafana'], cls: 'sun', desc: 'Event-driven architecture for real-time ingestion, transformation and dashboard visualization.' },
+  { title: 'AenPi — Urdu NLP Library', year: '2026', tags: ['Green AI', 'CRF', 'Urdu'], cls: 'violet', desc: 'Lightweight Urdu NLP library built on green-AI principles — strong results on Urdu text with no LLM required.' },
+  { title: 'Factory Compliance Alert System', year: '2026', tags: ['RAG', 'Green AI', 'Video'], cls: 'pink', desc: 'End-to-end compliance system that ingests factory video, parses regulatory policy docs, and drives real-time alert workflows.' },
+];
+
+function Projects() {
+  return (
+    <section id="projects">
+      <div className="wrap">
+        <div className="section-title"><span className="num sun">03 /</span> PROJECTS</div>
+        <div className="proj-grid">
+          {PROJECTS.map(p => (
+            <div key={p.title} className="proj-card pixel-border">
+              <span className="year">{p.year}</span>
+              <h3>{p.title}</h3>
+              <p>{p.desc}</p>
+              <div>{p.tags.map(t => <span key={t} className={"chip " + p.cls}>{t}</span>)}</div>
+            </div>
+          ))}
+        </div>
+        <div className="achievements pixel-border">
+          <h3>ACHIEVEMENTS &amp; RESEARCH</h3>
+          <ul>
+            <li>ICAT Winner 2025 — NUTECH 360 Virtual Tour</li>
+            <li>Startup selected under the University Incubation Program (Viylsa)</li>
+            <li>IBM Build on Behalf Hackathon 2026 — Participant</li>
+            <li>In progress: CSI Motion Detection · ViT/CNN oral-cancer detection · Swarm Intelligence Optimization · ABM Crowd Simulation (NetLogo)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer>
+      <div className="wrap">
+        <div className="links">
+          <a href="https://github.com/EN-AenaHabib" target="_blank" rel="noopener noreferrer">GITHUB</a>
+          <a href="https://www.linkedin.com/in/aena-habib-260947354/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+          <a href="https://www.kaggle.com/aenahabib" target="_blank" rel="noopener noreferrer">KAGGLE</a>
+          <a href="https://huggingface.co/Aenpi" target="_blank" rel="noopener noreferrer">HUGGINGFACE</a>
+          <a href="mailto:aenahabibf23@nutech.edu.pk">EMAIL</a>
+        </div>
+        <p className="tag">building dreams in code</p>
+      </div>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <React.Fragment>
+      <Nav />
+      <Home />
+      <Quest />
+      <Info />
+      <Projects />
+      <Footer />
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
